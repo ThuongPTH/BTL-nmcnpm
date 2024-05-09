@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
     <h1>Danh sách vòng đấu</h1>
     <ul>
         {% for vongDau in dsVongDau %}
-            <li onclick="selectVongDau('{{ vongDau.MaVongDau }}')">Vòng đấu: {{ vongDau.maVongDau }}, Số vòng: {{ vongDau.soVong }}, Mã giải đấu: {{ vongDau.maGiaiDau }}, Thời gian: {{ vongDau.thoiGian }}</li>
+            <li onclick="selectVongDau('{{ vongDau.getMaVongDau() }}')">STT: {{ vongDau.getMaVongDau() }}, Số vòng: {{ vongDau.getSoVong() }}, Thời gian: {{ vongDau.getThoiGian() }}</li>
         {% endfor %}
     </ul>
 

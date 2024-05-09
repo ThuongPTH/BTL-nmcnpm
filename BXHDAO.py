@@ -1,9 +1,11 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import mysql.connector
 from mysql.connector import Error
-
-app = Flask(__name__)
+from Model.VongDau import vongDau_82
+from Model.BXH import BangXepHangVongDau_82
+from Model.CoThu import CoThu_82
+from Model.CoThuGiaiDau import CoThuGiaiDau_82
 
 app = Flask(__name__)
 
@@ -28,10 +30,11 @@ except Error as e:
 
 class BXHFrm_82:
     def __init__(self, dsVongDau):
-        self.dsVongDau = []
+        self.dsVongDau = dsVongDau
 
     def BXHFrm_82(self):
-        return render_template('../View/BXHFrm_82.html', dsVongDau=self.dsVongDau)
+        #print (self.dsVongDau)
+        return render_template('BXHFrm.html', dsVongDau=self.dsVongDau)
 
 class DSCoThuBXHFrm_82:
     def __init__(self, ds_co_thu):
@@ -41,7 +44,7 @@ class DSCoThuBXHFrm_82:
         # Hiển thị danh sách cờ thủ trong BXH
         return render_template('ds_co_thu.html', ds_co_thu=self.dsCoThu)
 
-class BHXDAO_82:
+class BXHDAO_82:
     def __init__(self, db_con):
         self.dbCon = db_con
 
@@ -49,27 +52,47 @@ class BHXDAO_82:
         # Tìm kiếm danh sách vòng đấu theo giải đấu
         cursor = self.dbCon.cursor()
         query = "SELECT * FROM VongDau_82 WHERE maGiaiDau = %s"
-        cursor.execute(query, (maGiaiDau))
+        cursor.execute(query, (maGiaiDau, ))
         result = cursor.fetchall()
         cursor.close()
-        return result
+        ds_vong_dau = []
+        for row in result:
+            vong_dau = vongDau_82(row[0], row[1], row[2], row[3])  # Tạo đối tượng VongDau từ dữ liệu trong hàng
+            ds_vong_dau.append(vong_dau)
+        return ds_vong_dau
 
     def search_bxh_vong_dau(self, vong_dau):
         # Tìm kiếm bảng xếp hạng vòng đấu
         cursor = self.dbCon.cursor()
         query = "SELECT * FROM bang_xep_hang WHERE ma_vong_dau = %s"
-        cursor.execute(query, (vong_dau,))
+        cursor.execute(query, (vong_dau, ))
         result = cursor.fetchall()
         cursor.close()
         return result
 
-bhx_dao = BHXDAO_82(db_con)
+bxh_dao = BXHDAO_82(db_con)
 
 @app.route('/')
 def index():
     # Sử dụng lớp BHXDAO_82 để tìm kiếm danh sách vòng đấu và bảng xếp hạng vòng đấu
-    ds_vong_dau = bhx_dao.searchDsVongDau('2024')
+    ds_vong_dau = bxh_dao.searchDsVongDau(1)
+    BXHFrm = BXHFrm_82(ds_vong_dau)
+    return BXHFrm.BXHFrm_82()
     #bxh_vong_dau = bhx_dao.search_bxh_vong_dau('2')
+    
+@app.route('/process_vong_dau', methods=['GET'])
+def process_vong_dau():
+    selected_vong_dau = request.args.get('selectedVongDau')
+    #chuyển hướng đến trang xử lý vòng đấu cụ thể
+    return redirect(f'/vong_dau/{selected_vong_dau}')
+
+@app.route('/vong_dau/<int:ma_vong_dau>')
+def vong_dau(ma_vong_dau):
+    # Trong ví dụ này, chỉ in ra mã vòng đấu
+    ds_co_thu = bxh_dao.search_bxh_vong_dau(int(ma_vong_dau))
+    DSCoThuBXHFrm = DSCoThuBXHFrm_82(ma_vong_dau)
+    return f"Mã vòng đấu được chọn: {ma_vong_dau}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)

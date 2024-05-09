@@ -1,5 +1,5 @@
 class vongDau_82:
-    def __init__(self, maVongDau, soVong, maGiaiDau, thoiGian):
+    def __init__(self, maVongDau, soVong, thoiGian, maGiaiDau):
         self.__maVongDau = maVongDau
         self.__soVong = soVong
         self.__maGiaiDau = maGiaiDau
