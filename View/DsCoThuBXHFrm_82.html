@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách cờ thủ trong bảng xếp hạng</title>
+</head>
+<body>
+    <h1>Danh sách cờ thủ trong bảng xếp hạng</h1>
+    <ul>
+        {% for CoThu in ds_co_thu %}
+            <li>Mã cờ thủ: {{ co_thu['MaCoThu'] }}, Tên: {{ co_thu['Ten'] }}, Năm sinh: {{ co_thu['NamSinh'] }}, Quốc tịch: {{ co_thu['QuocTich'] }}, Hệ số Elo: {{ co_thu['HeSoElo'] }}, Ghi chú: {{ co_thu['GhiChu'] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

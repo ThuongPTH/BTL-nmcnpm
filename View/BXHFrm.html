@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách vòng đấu</title>
+</head>
+<body>
+    <h1>Danh sách vòng đấu</h1>
+    <ul>
+        {% for vongDau in dsVongDau %}
+            <li onclick="selectVongDau('{{ vongDau.MaVongDau }}')">Vòng đấu: {{ vongDau.maVongDau }}, Số vòng: {{ vongDau.soVong }}, Mã giải đấu: {{ vongDau.maGiaiDau }}, Thời gian: {{ vongDau.thoiGian }}</li>
+        {% endfor %}
+    </ul>
+
+    <form id="selectVongDauForm" action="/process_vong_dau" method="GET" style="display: none;">
+        <input type="hidden" id="selectedVongDau" name="selectedVongDau">
+    </form>
+
+    <script>
+        function selectVongDau(maVongDau) {
+            document.getElementById("selectedVongDau").value = maVongDau;
+            document.getElementById("selectVongDauForm").submit();
+        }
+    </script>
+</body>
+</html>
