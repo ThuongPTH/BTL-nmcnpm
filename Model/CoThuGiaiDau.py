@@ -1,10 +1,11 @@
 class CoThuGiaiDau_82:
-    def __init__(self, maCoThuGiaiDau, maCoThu, maGiaiDau, maTranDau, thayDoiElo):
+    def __init__(self, maCoThuGiaiDau, maCoThu, maGiaiDau, maTranDau, thayDoiElo, coThu):
         self.__maCoThuGiaiDau = maCoThuGiaiDau
         self.__maCoThu = maCoThu
         self.__maGiaiDau = maGiaiDau
         self.__maTranDau = maTranDau
         self.__thayDoiElo = thayDoiElo
+        self.__coThu = coThu
 
     def getMaCoThuGiaiDau(self):
         return self.__maCoThuGiaiDau
@@ -17,6 +18,12 @@ class CoThuGiaiDau_82:
 
     def setMaCoThu(self, maCoThu):
         self.__maCoThu = maCoThu
+
+    def getCoThu(self):
+        return self.__coThu
+
+    def setCoThu(self, coThu):
+        self.__maCoThu = coThu
 
     def getMaGiaiDau(self):
         return self.__maGiaiDau

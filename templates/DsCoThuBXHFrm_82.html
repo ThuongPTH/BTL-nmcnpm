@@ -8,8 +8,9 @@
 <body>
     <h1>Danh sách cờ thủ trong bảng xếp hạng</h1>
     <ul>
-        {% for CoThu in ds_co_thu %}
-            <li>Mã cờ thủ: {{ co_thu['MaCoThu'] }}, Tên: {{ co_thu['Ten'] }}, Năm sinh: {{ co_thu['NamSinh'] }}, Quốc tịch: {{ co_thu['QuocTich'] }}, Hệ số Elo: {{ co_thu['HeSoElo'] }}, Ghi chú: {{ co_thu['GhiChu'] }}</li>
+        {% for coThu in dsCoThu %}
+            <li>STT: {{ loop.index }}, Mã cờ thủ: {{ coThu.getMaCoThu() }}, Tên: {{ coThu.getCoThu().getTen() }}, Năm sinh: {{ coThu.getCoThu().getNamSinh() }}, Quốc tịch: {{ coThu.getCoThu().getQuocTich() }}, Tổng điểm: {{ coThu.getTongDiem()}}, Tổng điểm đối thủ: {{coThu.getTongDiemDoiThu()}}, Hệ số Elo: {{ coThu.getCoThu().getHeSoElo() }}</li>
+    </br>
         {% endfor %}
     </ul>
 </body>

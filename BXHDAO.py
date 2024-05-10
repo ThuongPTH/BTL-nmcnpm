@@ -6,6 +6,7 @@ from Model.VongDau import vongDau_82
 from Model.BXH import BangXepHangVongDau_82
 from Model.CoThu import CoThu_82
 from Model.CoThuGiaiDau import CoThuGiaiDau_82
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -34,15 +35,16 @@ class BXHFrm_82:
 
     def BXHFrm_82(self):
         #print (self.dsVongDau)
-        return render_template('BXHFrm.html', dsVongDau=self.dsVongDau)
+        thoiGianHienTai = datetime.now()
+        return render_template('BXHFrm.html', dsVongDau=self.dsVongDau, thoiGianHienTai=thoiGianHienTai)
 
 class DSCoThuBXHFrm_82:
-    def __init__(self, ds_co_thu):
-        self.dsCoThu = ds_co_thu
+    def __init__(self, dsCoThu):
+        self.dsCoThu = dsCoThu
 
-    def DsCoThuBXHFrm(self):
+    def DsCoThuBXHFrm_82(self):
         # Hiển thị danh sách cờ thủ trong BXH
-        return render_template('ds_co_thu.html', ds_co_thu=self.dsCoThu)
+        return render_template('DsCoThuBXHFrm_82.html', dsCoThu=self.dsCoThu)
 
 class BXHDAO_82:
     def __init__(self, db_con):
@@ -64,11 +66,23 @@ class BXHDAO_82:
     def search_bxh_vong_dau(self, vong_dau):
         # Tìm kiếm bảng xếp hạng vòng đấu
         cursor = self.dbCon.cursor()
-        query = "SELECT * FROM bang_xep_hang WHERE ma_vong_dau = %s"
+        query = "SELECT * FROM bxhvongdau_82 WHERE maVongDau = %s"
         cursor.execute(query, (vong_dau, ))
         result = cursor.fetchall()
         cursor.close()
-        return result
+        ds_co_thu = []
+        for row in result:
+            maCoThu = row[2]
+            cursor = self.dbCon.cursor()
+            query = "SELECT * FROM cothu_82 WHERE maCoThu = %s"
+            cursor.execute(query, (maCoThu, ))
+            rs = cursor.fetchall()
+            cursor.close()
+            coThu = CoThu_82(rs[0][0], rs[0][1], rs[0][2], rs[0][3], rs[0][4], rs[0][5])
+            co_thu = BangXepHangVongDau_82(row[0], row[1], row[2], row[3], row[4], row[5], coThu)
+            ds_co_thu.append(co_thu)
+        ds_co_thu = sorted(ds_co_thu, key=lambda x: (x.getTongDiem(), x.getTongDiemDoiThu(), x.getHeSoElo()), reverse=True)
+        return ds_co_thu
 
 bxh_dao = BXHDAO_82(db_con)
 
@@ -78,7 +92,6 @@ def index():
     ds_vong_dau = bxh_dao.searchDsVongDau(1)
     BXHFrm = BXHFrm_82(ds_vong_dau)
     return BXHFrm.BXHFrm_82()
-    #bxh_vong_dau = bhx_dao.search_bxh_vong_dau('2')
     
 @app.route('/process_vong_dau', methods=['GET'])
 def process_vong_dau():
@@ -89,9 +102,9 @@ def process_vong_dau():
 @app.route('/vong_dau/<int:ma_vong_dau>')
 def vong_dau(ma_vong_dau):
     # Trong ví dụ này, chỉ in ra mã vòng đấu
-    ds_co_thu = bxh_dao.search_bxh_vong_dau(int(ma_vong_dau))
-    DSCoThuBXHFrm = DSCoThuBXHFrm_82(ma_vong_dau)
-    return f"Mã vòng đấu được chọn: {ma_vong_dau}"
+    ds_co_thu = bxh_dao.search_bxh_vong_dau(ma_vong_dau)
+    DSCoThuBXHFrm = DSCoThuBXHFrm_82(ds_co_thu)
+    return DSCoThuBXHFrm.DsCoThuBXHFrm_82()
 
 
 if __name__ == '__main__':

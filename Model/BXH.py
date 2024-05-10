@@ -1,11 +1,12 @@
 class BangXepHangVongDau_82:
-    def __init__(self, maBXH, maVongDau, maCoThu, tongDiem, heSoElo, tongDiemDoiThu):
+    def __init__(self, maBXH, maVongDau, maCoThu, tongDiem, heSoElo, tongDiemDoiThu, coThu):
         self.__maBXH = maBXH
         self.__maVongDau = maVongDau
         self.__maCoThu = maCoThu
         self.__tongDiem = tongDiem
         self.__heSoElo = heSoElo
         self.__tongDiemDoiThu = tongDiemDoiThu
+        self.__coThu = coThu
 
     def getMaBXH(self):
         return self.__maBXH
@@ -24,6 +25,12 @@ class BangXepHangVongDau_82:
 
     def setMaCoThu(self, maCoThu):
         self.__maCoThu = maCoThu
+
+    def getCoThu(self):
+        return self.__coThu
+
+    def setCoThu(self, coThu):
+        self.__maCoThu = coThu
 
     def getTongDiem(self):
         return self.__tongDiem

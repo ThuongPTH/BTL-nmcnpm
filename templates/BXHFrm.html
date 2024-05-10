@@ -10,7 +10,11 @@
     <h1>Danh sách vòng đấu</h1>
     <ul>
         {% for vongDau in dsVongDau %}
-            <li onclick="selectVongDau('{{ vongDau.getMaVongDau() }}')">STT: {{ vongDau.getMaVongDau() }}, Số vòng: {{ vongDau.getSoVong() }}, Thời gian: {{ vongDau.getThoiGian() }}</li>
+        {% if vongDau.getThoiGian() < thoiGianHienTai %}
+        <li onclick="selectVongDau('{{ vongDau.getMaVongDau() }}')">STT: {{ vongDau.getMaVongDau() }}, Số vòng: {{ vongDau.getSoVong() }}, Thời gian: {{ vongDau.getThoiGian() }}</li>
+    {% else %}
+        <li onclick="showWarning()">STT: {{ vongDau.getMaVongDau() }}, Số vòng: {{ vongDau.getSoVong() }}, Thời gian: {{ vongDau.getThoiGian() }} - Vòng đấu chưa diễn ra</li>
+    {% endif %}
         {% endfor %}
     </ul>
 
@@ -22,6 +26,10 @@
         function selectVongDau(maVongDau) {
             document.getElementById("selectedVongDau").value = maVongDau;
             document.getElementById("selectVongDauForm").submit();
+        }
+
+        function showWarning() {
+            alert("Vòng đấu chưa diễn ra, vui lòng chọn lại vòng đấu");
         }
     </script>
 </body>
