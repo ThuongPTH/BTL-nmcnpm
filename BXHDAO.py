@@ -28,6 +28,13 @@ try:
         print("Kết nối thành công đến cơ sở dữ liệu MySQL")
 except Error as e:
     print("Lỗi khi kết nối đến cơ sở dữ liệu MySQL:", e)
+    
+class BTCFrm_82:
+    def __init__(self) -> None:
+        pass
+    
+    def BTCFrm_82(self):
+        return render_template('BTCFrm_82.html')
 
 class BXHFrm_82:
     def __init__(self, dsVongDau):
@@ -88,6 +95,11 @@ bxh_dao = BXHDAO_82(db_con)
 
 @app.route('/')
 def index():
+     menu = BTCFrm_82()
+     return menu.BTCFrm_82()
+     
+@app.route('/BXH')
+def BXH():
     # Sử dụng lớp BHXDAO_82 để tìm kiếm danh sách vòng đấu và bảng xếp hạng vòng đấu
     ds_vong_dau = bxh_dao.searchDsVongDau(1)
     BXHFrm = BXHFrm_82(ds_vong_dau)

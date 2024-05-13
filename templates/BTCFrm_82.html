@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Form</title>
+</head>
+<body>
+    <h1>Trang BTC Form</h1>
+    <button onclick="redirectTo('/pairing')">Xếp Cặp Thi Đấu</button>
+    <button onclick="redirectTo('/update')">Cập Nhập Kết Quả</button>
+    <button onclick="showStatistics()">Thống Kê</button>
+
+    <!-- Div để hiển thị các button thống kê -->
+    <div id="statisticsButtons" style="display: none;">
+    </br>
+        <button onclick="redirectTo('/elo')">Thống Kê Elo</button>
+        <button onclick="redirectTo('/BXH')">Xem Bảng Xếp Hạng</button>
+    </div>
+
+    <script>
+        function redirectTo(url) {
+            // Chuyển hướng người dùng đến URL cụ thể
+            window.location.href = url;
+        }
+
+        function showStatistics() {
+            // Hiển thị các button thống kê
+            document.getElementById("statisticsButtons").style.display = "block";
+        }
+    </script>
+</body>
+</html>

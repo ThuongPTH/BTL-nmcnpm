@@ -17,10 +17,12 @@
     {% endif %}
         {% endfor %}
     </ul>
+    <button onclick="returnToBTCFrm()">Quay về trang chủ</button>
 
     <form id="selectVongDauForm" action="/process_vong_dau" method="GET" style="display: none;">
         <input type="hidden" id="selectedVongDau" name="selectedVongDau">
     </form>
+
 
     <script>
         function selectVongDau(maVongDau) {
@@ -30,6 +32,10 @@
 
         function showWarning() {
             alert("Vòng đấu chưa diễn ra, vui lòng chọn lại vòng đấu");
+        }
+
+        function returnToBTCFrm() {
+            window.location.href = "/";
         }
     </script>
 </body>
